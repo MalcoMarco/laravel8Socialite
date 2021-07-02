@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,19 @@ Route::get('/', function () {
     ]);
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->name('dashboard');
+
+/*
+|--------------------------------------------------------------------------
+| SOCIALITE LOGIN ROUTES
+|--------------------------------------------------------------------------
+*/
+Route::get('/login/{driver}', [App\Http\Controllers\Auth\Socialitelogincontroller::class, 'login'])->name('socialite-login');
+Route::get('/login/{driver}/callback', [App\Http\Controllers\Auth\Socialitelogincontroller::class, 'callback']);
+
+
+
+Route::middleware(['auth:sanctum', 'verified'])
+    ->get('/dashboard', function () {
+        return Inertia::render('Dashboard');
+    })
+    ->name('dashboard');
